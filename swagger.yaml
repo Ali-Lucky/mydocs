@@ -21,7 +21,119 @@ servers:
         enum:
           - v1
           - v2
+        default: v1
       protocol:
         enum:
           - http
           - https
+        default: http
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /lco:
+    get:
+      tags:
+        - String
+      summary: returns a message from lco
+      responses:
+        200:
+          description: All good and success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "myString"
+        400:
+          description: Bad request
+        500:
+          description: Interval server error
+
+  /lcoobject:
+    get:
+      tags:
+        - Object
+      summary: returns a unique course
+      responses:
+        200:
+          description: All good and success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: # Properties only used in case of type object
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: number
+        400:
+          description: Bad request
+        500:
+          description: Interval server error
+
+  /courses:
+    get:
+      tags:
+        - Array
+      summary: returns all courses
+      responses:
+        200:
+          description: All good and success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: # Properties only used in case of type object
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    price:
+                      type: number
+        400:
+          description: Bad request
+        500:
+          description: Interval server error
+
+  /mycourse/{courseId}:
+    get:
+      tags:
+        - String
+      summary: returns course based on request id
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          dafault: 22
+          schema:
+            type: string
+      responses:
+        200:
+          description: All good and success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: number
+        400:
+          description: Bad request
+        500:
+          description: Interval server error
